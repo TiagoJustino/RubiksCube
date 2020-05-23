@@ -1,0 +1,34 @@
+#box {
+  width: 204px;
+  height: 153px;
+  border: #000000 solid 1px;
+}
+
+.boxes {
+  width: 15px;
+  height: 15px;
+  border: #000000 solid 1px;
+  float: left;
+  text-align: center;
+}
+
+.row {
+  width: 204px;
+  height: 17px;
+  float: left;
+}
+
+.rowshort {
+  margin-left: 51px;
+  margin-right: 102px;
+  width: 51px;
+  height: 17px;
+  float: left;
+}
+
+.white {background-color: white;}
+.red {background-color: red;}
+.blue {background-color: blue;}
+.orange {background-color: orange;}
+.green {background-color: green;}
+.yellow {background-color: yellow;}
