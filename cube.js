@@ -165,4 +165,47 @@
     }
   }
 
+  exports.void = function(c, faces) {
+    for(const f of Object.keys(faces)) {
+      for(const v of faces[f]) {
+        c.faces[f][v] = 'v';
+      }
+    }
+  }
+
+  exports.setBlankTop = function(c) {
+    exports.void(c, { left: [ 0, 1, 2 ], front: [ 0, 1, 2 ], right: [ 0, 1, 2 ], back: [ 0, 1, 2 ], top: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+  exports.setBlankDown = function(c) {
+    exports.void(c, { left: [ 6, 7, 8 ], front: [ 6, 7, 8 ], right: [ 6, 7, 8 ], back: [ 6, 7, 8 ], down: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+  exports.setBlankLeft = function(c) {
+    exports.void(c, { top: [ 0, 3, 6 ], front: [ 0, 3, 6 ], down: [ 0, 3, 6 ], back: [ 2, 5, 8 ], left: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+  exports.setBlankRight = function(c) {
+    exports.void(c, { top: [ 2, 5, 8 ], front: [ 2, 5, 8 ], down: [ 2, 5, 8 ], back: [ 0, 3, 6 ], right: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+  exports.setBlankFront = function(c) {
+    exports.void(c, { left: [ 2, 5, 8 ], top: [ 6, 7, 8 ], right: [ 0, 3, 6 ], down: [ 0, 1, 2 ], front: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+  exports.setBlankBack = function(c) {
+    exports.void(c, { left: [ 0, 3, 6 ], top: [ 0, 1, 2 ], right: [ 2, 5, 8 ], down: [ 6, 7, 8 ], back: [ 0, 1, 2, 3, 5, 6, 7, 8] });
+  }
+
+  exports.setBlank = function(input, c) {
+    if(input == 't' || input == "t'") {
+      exports.setBlankTop(c);
+    } else if (input == 'd' || input == "d'") {
+      exports.setBlankDown(c);
+    } else if (input == 'l' || input == "l'") {
+      exports.setBlankLeft(c);
+    } else if (input == 'r' || input == "r'") {
+      exports.setBlankRight(c);
+    } else if (input == 'f' || input == "f'") {
+      exports.setBlankFront(c);
+    } else if (input == 'b' || input == "b'") {
+      exports.setBlankBack(c);
+    }
+  }
+
 }(typeof exports === 'undefined' ? this.cube = {} : exports));

@@ -81,20 +81,23 @@
 		</div>
     <br>
 
-    <button ng-click="rotate('t')" type="button">t</button>
-    <button ng-click="rotate('tp')" type="button">t'</button>
-    <button ng-click="rotate('l')" type="button">l</button>
-    <button ng-click="rotate('lp')" type="button">l'</button>
-    <button ng-click="rotate('f')" type="button">f</button>
-    <button ng-click="rotate('fp')" type="button">f'</button>
-    <button ng-click="rotate('r')" type="button">r</button>
-    <button ng-click="rotate('rp')" type="button">r'</button>
-    <button ng-click="rotate('b')" type="button">b</button>
-    <button ng-click="rotate('bp')" type="button">b'</button>
-    <button ng-click="rotate('d')" type="button">d</button>
-    <button ng-click="rotate('dp')" type="button">d'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('t')" type="button">t</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('tp')" type="button">t'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('l')" type="button">l</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('lp')" type="button">l'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('f')" type="button">f</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('fp')" type="button">f'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('r')" type="button">r</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('rp')" type="button">r'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('b')" type="button">b</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('bp')" type="button">b'</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('d')" type="button">d</button>
+    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('dp')" type="button">d'</button>
+	<br>
+    <button class="btw" ng-disabled="btDisabled()" ng-click="shuffle()" type="button">shuffle</button>
+    <button class="btw" ng-disabled="btDisabled()" ng-click="reset()" type="button">reset</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.9/angular.js"></script>
+    <script src="./angular.js"></script>
     <script src="./cube.js"></script>
     <script src="./index.js"></script>
     <link rel="stylesheet" href="./index.css">

@@ -1,32 +1,46 @@
 #box {
-  width: 204px;
-  height: 153px;
-  border: #000000 solid 1px;
+  width: 51rem;
+  height: 38.25rem;
+  border: #000000 solid 0.25rem;
 }
 
 .boxes {
-  width: 15px;
-  height: 15px;
-  border: #000000 solid 1px;
+  width: 3.75rem;
+  height: 3.75rem;
+  border: #000000 solid 0.25rem;
   float: left;
   text-align: center;
+  transition: background-color 600ms ease-in-out;
 }
 
 .row {
-  width: 204px;
-  height: 17px;
+  width: 51rem;
+  height: 4.25rem;
   float: left;
 }
 
 .rowshort {
-  margin-left: 51px;
-  margin-right: 102px;
-  width: 51px;
-  height: 17px;
+  margin-left: 12.75rem;
+  margin-right: 25.5rem;
+  width: 12.75rem;
+  height: 4.25rem;
   float: left;
 }
 
-.white {background-color: white;}
+.bt {
+  width: 4rem;
+  height: 4rem;
+  font-size: 3rem;
+}
+
+.btw {
+  margin-top: 1rem;
+  height: 4rem;
+  font-size: 3rem;
+}
+
+.void {background-color: white;}
+.white {background-color: gray;}
 .red {background-color: red;}
 .blue {background-color: blue;}
 .orange {background-color: orange;}
