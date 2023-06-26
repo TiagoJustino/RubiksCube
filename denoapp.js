@@ -56,7 +56,7 @@ function printCube(c) {
   printCubeDown(c);
 };
 
-const myCube = cube.newCube();
+let myCube = cube.newCube();
 
 function onLine(line) {
   const input = line?.trim();
@@ -84,6 +84,11 @@ function onLine(line) {
     cube.rotate(input, myCube);
   } else if (input == "b'") {
     cube.rotate(input, myCube);
+  } else if (input == 's') {
+    const movs = cube.shuffle(myCube);
+    console.log(' =>', movs.join(' '));
+  } else if (input == '0') {
+    myCube = cube.newCube();
   } else if (input == 'q' || line == Deno.EOF) {
     console.log('Have a nice one!');
     Deno.exit(0);

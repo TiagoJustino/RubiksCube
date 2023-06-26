@@ -1,5 +1,9 @@
 const cube = {};
 
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 cube.newCube = function() {
   const ret = {
     faces: {
@@ -135,6 +139,20 @@ cube.rotateBackPrime = function(c) {
   cube.rotateBack(c);
   cube.rotateBack(c);
   cube.rotateBack(c);
+}
+
+cube.shuffle = function(c) {
+  const movs = ['t', "t'", 'd', "d'", 'l', "l'", 'r', "r'", 'f', "f'", 'b', "b'"];
+  const len = movs.length;
+  let n = getRandom(12, 18);
+  const hist = [];
+  while(n > 0) {
+    n--;
+    const mov = movs[getRandom(0, len - 1)];
+    hist.push(mov);
+    cube.rotate(mov, c);
+  }
+  return hist;
 }
 
 cube.rotate = function(input, c) {
