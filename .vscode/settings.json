@@ -1,6 +1,8 @@
 {
     "deno.enable": true,
     "deno.unstable": true,
+    "window.zoomLevel": 0.7,
+    "editor.fontSize": 15,
     "[svelte]": {
         "editor.defaultFormatter": "svelte.svelte-vscode"
     }

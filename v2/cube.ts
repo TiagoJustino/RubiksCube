@@ -46,7 +46,7 @@ class Cube {
     ];
     const res: string[][] = [];
     for (let i = 0; i < 9; i++) {
-      res[i] = Array(12).fill(".");
+      res[i] = Array(12).fill(" ");
     }
     const intermediate = this.getIntermediateRepresentation();
     for (let f = 0; f < 6; f++) {
@@ -60,7 +60,7 @@ class Cube {
         }
       }
     }
-    return res.map((line) => line.join(" ")).join("\n");
+    return " " + res.map((line) => line.join(" ")).join("\n ");
   }
 
   rotate(face: Face, rotation: Rotation) {

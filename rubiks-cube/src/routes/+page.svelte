@@ -6,16 +6,79 @@
   import { Face } from '../../../v2/face';
   import { Rotation } from '../../../v2/rotation';
   import * as knobby from 'svelte-knobby';
+  import type { Writable, writable } from 'svelte/store';
 
-  const ANGLE_STEP_SIZE = Math.PI / 2 / 45;
+  const ANGLE_STEP_SIZE = ((Math.PI / 2) / 15);
   const CAMERA_INITIAL_POSITION = [3, 4, 5];
+  const moves: string[] = [
+    'top',
+    'left',
+    'front',
+    'right',
+    'back',
+    'down',
+    'top prime',
+    'left prime',
+    'front prime',
+    'right prime',
+    'back prime',
+    'down prime'
+  ];
+
   let cube: Cube = new Cube();
   let rotating: Face = null as unknown as Face;
   let rotation: Rotation = Rotation.clockwise;
-  let angle = Math.PI / 6;
+  let angle = Math.PI / 2;
   let cameraPosition = CAMERA_INITIAL_POSITION;
+  let shuffling = false;
+  let shufflingFirst = true;
+  let shufflingCycles = 0;
+  let controls: Writable<any>;
 
-  const controls = knobby.panel({
+  function getRandom(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function rotatingLoop() {
+    if (
+      (rotation == Rotation.clockwise && angle >= Math.PI / 2) ||
+      (rotation == Rotation.counterclockwise && angle <= -(Math.PI / 2))
+    ) {
+      cube = cube.rotate(rotating, rotation as Rotation);
+      rotating = null as unknown as Face;
+      angle = 0;
+    } else {
+      angle = angle + (rotation == Rotation.clockwise ? 1 : -1) * ANGLE_STEP_SIZE;
+    }
+  }
+  
+  function shufflingLoop() {
+    if (shufflingFirst) {
+      shufflingCycles = 20;
+      shufflingFirst = false;
+    }
+    const len = moves.length;
+    if(shufflingCycles <= 0) {
+      shuffling = false;
+      cube.print2d();
+      return;
+    }
+    shufflingCycles--;
+    const i = getRandom(0, len - 1);
+    const move = moves[i];
+    const moveAsFunction = ($controls as unknown as Record<string, Function>)[move];
+    moveAsFunction();
+  }
+
+  function onFrameLoop() {
+    if (rotating) {
+      rotatingLoop();
+    } else if (shuffling) {
+      shufflingLoop();
+    }
+  }
+
+  controls = knobby.panel({
     top: () => {
       rotating = Face.top;
       rotation = Rotation.clockwise;
@@ -64,29 +127,22 @@
       rotating = Face.down;
       rotation = Rotation.counterclockwise;
     },
+    shuffle: () => {
+      shuffling = true;
+      shufflingFirst = true;
+    },
     reset: () => {
       cube = new Cube();
     },
     'reset camera': () => {
       cameraPosition = CAMERA_INITIAL_POSITION;
-    },
-  });
-  $controls.workaround = true;
-  $controls.DO_NOT_DELETE_ME = true;
-  SC.onFrame(() => {
-    if (rotating) {
-      if (
-        (rotation == Rotation.clockwise && angle >= Math.PI / 2) ||
-        (rotation == Rotation.counterclockwise && angle <= -(Math.PI / 2))
-      ) {
-        cube = cube.rotate(rotating, rotation as Rotation);
-        rotating = null as unknown as Face;
-        angle = 0;
-      } else {
-        angle = angle + (rotation == Rotation.clockwise ? 1 : -1) * ANGLE_STEP_SIZE;
-      }
     }
   });
+
+  $controls.workaround = true;
+  $controls.DO_NOT_DELETE_ME = true;
+
+  SC.onFrame(onFrameLoop);
 </script>
 
 <SC.Canvas
@@ -103,7 +159,7 @@
     receiveShadow
   />
 
-  {#each cube.cubelets.map( (cublet) => cubeletToBoxPosition(cublet, rotating, angle) ) as box, index}
+  {#each cube.cubelets.map((cublet) => cubeletToBoxPosition(cublet, rotating, angle)) as box, index}
     <SC.Group position={[box.x, box.y, box.z]} rotation={[box.xa, box.ya, box.za]}>
       <SC.Mesh
         geometry={new THREE.BoxGeometry(0.99, 0.99, 0.99)}
