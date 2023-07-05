@@ -6,9 +6,10 @@
   import { Face } from '../../../v2/face';
   import { Rotation } from '../../../v2/rotation';
   import * as knobby from 'svelte-knobby';
-  import type { Writable, writable } from 'svelte/store';
+  import type { Writable } from 'svelte/store';
+  import { browser } from '$app/environment';
 
-  const ANGLE_STEP_SIZE = ((Math.PI / 2) / 15);
+  const ANGLE_STEP_SIZE = Math.PI / 2 / 15;
   const CAMERA_INITIAL_POSITION = [3, 4, 5];
   const moves: string[] = [
     'top',
@@ -24,6 +25,20 @@
     'back prime',
     'down prime'
   ];
+  const movesAliases: Record<string, string> = {
+    t: 'top',
+    l: 'left',
+    f: 'front',
+    r: 'right',
+    b: 'back',
+    d: 'down',
+    T: 'top prime',
+    L: 'left prime',
+    F: 'front prime',
+    R: 'right prime',
+    B: 'back prime',
+    D: 'down prime'
+  };
 
   let cube: Cube = new Cube();
   let rotating: Face = null as unknown as Face;
@@ -31,12 +46,28 @@
   let angle = Math.PI / 2;
   let cameraPosition = CAMERA_INITIAL_POSITION;
   let shuffling = false;
+  let solving = false;
+  let solveMoves: string[] = [];
   let shufflingFirst = true;
   let shufflingCycles = 0;
   let controls: Writable<any>;
 
   function getRandom(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function getSolveButton(): HTMLButtonElement {
+    const detailsKnobby = document.querySelector('details.knobby') as Element;
+    const divRoot = detailsKnobby.querySelector('div.root') as Element;
+    return Array.from(divRoot.querySelectorAll('button')).find(el => el.textContent == 'solve') as HTMLButtonElement;
+  }
+  
+  function disableSolveButton() {
+    getSolveButton().disabled = true;
+  }
+
+  function enableSolveButton() {
+    getSolveButton().disabled = false;
   }
 
   function rotatingLoop() {
@@ -51,14 +82,14 @@
       angle = angle + (rotation == Rotation.clockwise ? 1 : -1) * ANGLE_STEP_SIZE;
     }
   }
-  
+
   function shufflingLoop() {
     if (shufflingFirst) {
       shufflingCycles = 20;
       shufflingFirst = false;
     }
     const len = moves.length;
-    if(shufflingCycles <= 0) {
+    if (shufflingCycles <= 0) {
       shuffling = false;
       cube.print2d();
       return;
@@ -70,11 +101,46 @@
     moveAsFunction();
   }
 
+  function setSolveMoves(moves: string[]) {
+    solveMoves = moves.join('').split('');
+    solving = true;
+  }
+
+  if (browser) {
+    window.setSolveMoves = setSolveMoves;
+  }
+
+  function getNextSolveMoves() {
+    solveMoves = cube.clone().solve();
+    if(solveMoves.length > 0) {
+      setSolveMoves(solveMoves);
+      disableSolveButton();
+    } else {
+      solving = false;
+      enableSolveButton();
+    }
+  }
+
+  function solvingLoop() {
+    if (solveMoves.length < 1) {
+      solving = false;
+      enableSolveButton();
+    }
+    if(solving) {
+      const moveAlias: string = solveMoves.splice(0, 1)[0];
+      const move: string = movesAliases[moveAlias];
+      const moveAsFunction = ($controls as unknown as Record<string, Function>)[move];
+      moveAsFunction();
+    }
+  }
+
   function onFrameLoop() {
     if (rotating) {
       rotatingLoop();
     } else if (shuffling) {
       shufflingLoop();
+    } else if (solving) {
+      solvingLoop();
     }
   }
 
@@ -130,6 +196,9 @@
     shuffle: () => {
       shuffling = true;
       shufflingFirst = true;
+    },
+    solve: () => {
+      getNextSolveMoves();
     },
     reset: () => {
       cube = new Cube();

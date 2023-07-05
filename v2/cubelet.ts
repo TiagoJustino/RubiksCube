@@ -12,16 +12,66 @@ interface ICubelet {
   type: CubeletType;
   facelets: IFacelet[];
   getFaces(): Face[];
+  export(): void;
+  clone(): Cubelet;
   rotate(face: Face, rotationt: Rotation): void;
+  satisfies(facelet: string): boolean;
 }
 
 class Cubelet implements ICubelet {
   type: CubeletType;
   facelets: Facelet[];
 
-  constructor(public x: number, public y: number, public z: number) {
-    this.type = this.initType(x, y, z);
-    this.facelets = this.initFacelets();
+  constructor(
+    public x: number,
+    public y: number,
+    public z: number,
+    type?: CubeletType,
+    facelets?: Facelet[]
+  ) {
+    if (type) {
+      this.type = type;
+    } else {
+      this.type = this.initType(x, y, z);
+    }
+    if (facelets) {
+      this.facelets = facelets;
+    } else {
+      this.facelets = this.initFacelets();
+    }
+  }
+
+  clone(): Cubelet {
+    const facelets: Facelet[] = [];
+    for (const facelet of this.facelets) {
+      facelets.push(facelet.clone());
+    }
+    const newCubelet = new Cubelet(this.x, this.y, this.z, this.type, facelets);
+    return newCubelet;
+  }
+
+  satisfies(faceletState: string): boolean {
+    const facelet: string = this.facelets
+      .map((f) => `${f.axis}${f.color}`)
+      .sort()
+      .join(";");
+    return faceletState == facelet;
+  }
+
+  toString() {
+    const x = `${(this.x < 0 ? "" : " " )}${this.x}`;
+    const y = `${(this.y < 0 ? "" : " " )}${this.y}`;
+    const z = `${(this.z < 0 ? "" : " " )}${this.z}`;
+    const thisCubelet = `${x}${y}${z}`;
+    const thisFacelet: string = this.facelets
+      .map((f) => `${f.axis}${f.color}`)
+      .sort()
+      .join(";");
+    return `${thisCubelet}:${thisFacelet}`;
+  }
+
+  export() {
+    console.log(this.toString());
   }
 
   initFacelets(): Facelet[] {
@@ -202,7 +252,7 @@ class Cubelet implements ICubelet {
   rotate(face: Face, rotation: Rotation) {
     this.rotateFace(face, rotation);
     for (const facelet of this.facelets) {
-      if (facelet.getFace() != face) {
+      if (facelet.face != face) {
         facelet.rotate(face, rotation);
       }
     }

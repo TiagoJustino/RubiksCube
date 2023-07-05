@@ -15,7 +15,9 @@ const colorsMap = {
 
 chalk.bgOrange = chalk.bgHex('#FFA500');
 
-const cube = new Cube();
+let cube = new Cube();
+
+let movs: string[] = [];
 
 function printCube(cube: Cube) {
   const cubeString: string = cube.get2dString();
@@ -27,7 +29,7 @@ function printCube(cube: Cube) {
   console.log(coloredCube);
 }
 
-function onLine(line: string) {
+async function onLine(line: string) {
   const input = line?.trim();
   if(input == 't') {
     cube.rotate(Face.top, Rotation.clockwise);
@@ -53,22 +55,34 @@ function onLine(line: string) {
     cube.rotate(Face.back, Rotation.clockwise);
   } else if (input == 'B') {
     cube.rotate(Face.back, Rotation.counterclockwise);
+  } else if (input == 'e') {
+    cube.export();
+  } else if (input == 'x') {
+    console.time('solve');
+    movs = cube.solve();
+    console.timeEnd('solve');
+    console.log(' =>', movs.join(' '));
   } else if (input == 's') {
-    const movs = cube.shuffle(myCube);
+    movs = cube.shuffle();
     console.log(' =>', movs.join(' '));
   } else if (input == '0') {
-    myCube = cube.newCube();
+    cube = new Cube();
   } else if (input == 'q' || line == Deno.EOF) {
     console.log('Have a nice one!');
     Deno.exit(0);
   } else {
     console.log('unknown command');
   }
-  printCube(cube);
+//  printCube(cube);
 }
 
-printCube(cube);
+// printCube(cube);
+
+cube.shuffle();
+cube.solve();
+/*
 do {
   const line = prompt('');
-  onLine(line);
+  await onLine(line as string);
 } while(true);
+*/

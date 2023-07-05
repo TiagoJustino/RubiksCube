@@ -7,6 +7,7 @@ interface IFacelet {
   axis: Axis;
   direction: number;
   color: Color;
+  face: Face;
 }
 
 const axisFaces: Record<Axis, [Face, Face]> = {
@@ -16,41 +17,54 @@ const axisFaces: Record<Axis, [Face, Face]> = {
 };
 
 class Facelet implements IFacelet {
+  face: Face = null as unknown as Face;
+
   constructor(
     public axis: Axis,
     public direction: number,
     public color: Color
-  ) {}
+  ) {
+    this.updateFace();
+  }
 
-  getFace(): Face {
+  clone(): Facelet {
+    return new Facelet(this.axis, this.direction, this.color);
+  }
+
+  updateFace(): void {
     if (this.axis == Axis.x) {
       if (this.direction > 0) {
-        return Face.right;
+        this.face = Face.right;
+        return;
       }
-      return Face.left;
+      this.face = Face.left;
+      return;
     }
     if (this.axis == Axis.y) {
       if (this.direction > 0) {
-        return Face.top;
+        this.face = Face.top;
+        return;
       }
-      return Face.down;
+      this.face = Face.down;
+      return;
     }
     if (this.direction > 0) {
-      return Face.front;
+      this.face = Face.front;
+      return;
     }
-    return Face.back;
+    this.face = Face.back;
   }
 
   rotateCommon(rotation: Rotation, axis: [Axis, Axis]) {
-    const face = this.getFace();
     if (
-      (rotation == Rotation.clockwise && axisFaces[axis[0]].includes(face)) ||
+      (rotation == Rotation.clockwise && axisFaces[axis[0]].includes(this.face)) ||
       (rotation == Rotation.counterclockwise &&
-        axisFaces[axis[1]].includes(face))
+        axisFaces[axis[1]].includes(this.face))
     ) {
       this.direction = -1 * this.direction;
     }
     this.axis = axis[(axis.indexOf(this.axis) + 1) % 2];
+    this.updateFace();
   }
 
   rotateTop(rotation: Rotation) {
