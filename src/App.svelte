@@ -1,12 +1,12 @@
 <script lang="ts">
   import * as THREE from 'three';
-  import * as SC from 'svelte-cubed';
   import { cubeletToBoxPosition } from './lib/cubelet-to-box-position';
   import { Cube } from './cube/cube';
   import { Face } from './cube/face';
   import { Rotation } from './cube/rotation';
-  import * as knobby from 'svelte-knobby';
   import type { Writable } from 'svelte/store';
+  import * as knobby from 'svelte-knobby';
+  import * as SC from 'svelte-cubed';
 
   const ANGLE_STEP_SIZE = Math.PI / 2 / 15;
   const CAMERA_INITIAL_POSITION = [3, 4, 5];

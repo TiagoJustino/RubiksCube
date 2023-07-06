@@ -20,6 +20,8 @@ jobs:
           BASE_PATH: "/RubiksCube"
         run: |
           deno task build
+          sed 's/"\/cube-favicon.png/"\/RubiksCube\/cube-favicon.png/' -i dist/index.html
+          sed 's/"\/assets/"\/RubiksCube\/assets/' -i dist/index.html
           touch dist/.nojekyll
 
       - name: Upload Artifacts
