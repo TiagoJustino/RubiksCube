@@ -1,105 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf 8">
-    <title>Rubik's Cube</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/cube-favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rubik's Cube - Tiago Justino</title>
   </head>
-  <body ng-app="app" ng-controller="AppCtrl">
-		<div id="box">
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.top[0])"></div>
-				<div ng-class="getClass(myCube.faces.top[1])"></div>
-				<div ng-class="getClass(myCube.faces.top[2])"></div>
-			</div>
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.top[3])"></div>
-				<div ng-class="getClass(myCube.faces.top[4])"></div>
-				<div ng-class="getClass(myCube.faces.top[5])"></div>
-			</div>
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.top[6])"></div>
-				<div ng-class="getClass(myCube.faces.top[7])"></div>
-				<div ng-class="getClass(myCube.faces.top[8])"></div>
-			</div>
-			<div class="row">
-				<div ng-class="getClass(myCube.faces.left[0])"></div>
-				<div ng-class="getClass(myCube.faces.left[1])"></div>
-				<div ng-class="getClass(myCube.faces.left[2])"></div>
-				<div ng-class="getClass(myCube.faces.front[0])"></div>
-				<div ng-class="getClass(myCube.faces.front[1])"></div>
-				<div ng-class="getClass(myCube.faces.front[2])"></div>
-				<div ng-class="getClass(myCube.faces.right[0])"></div>
-				<div ng-class="getClass(myCube.faces.right[1])"></div>
-				<div ng-class="getClass(myCube.faces.right[2])"></div>
-				<div ng-class="getClass(myCube.faces.back[0])"></div>
-				<div ng-class="getClass(myCube.faces.back[1])"></div>
-				<div ng-class="getClass(myCube.faces.back[2])"></div>
-			</div>
-			<div class="row">
-				<div ng-class="getClass(myCube.faces.left[3])"></div>
-				<div ng-class="getClass(myCube.faces.left[4])"></div>
-				<div ng-class="getClass(myCube.faces.left[5])"></div>
-				<div ng-class="getClass(myCube.faces.front[3])"></div>
-				<div ng-class="getClass(myCube.faces.front[4])"></div>
-				<div ng-class="getClass(myCube.faces.front[5])"></div>
-				<div ng-class="getClass(myCube.faces.right[3])"></div>
-				<div ng-class="getClass(myCube.faces.right[4])"></div>
-				<div ng-class="getClass(myCube.faces.right[5])"></div>
-				<div ng-class="getClass(myCube.faces.back[3])"></div>
-				<div ng-class="getClass(myCube.faces.back[4])"></div>
-				<div ng-class="getClass(myCube.faces.back[5])"></div>
-			</div>
-			<div class="row">
-				<div ng-class="getClass(myCube.faces.left[6])"></div>
-				<div ng-class="getClass(myCube.faces.left[7])"></div>
-				<div ng-class="getClass(myCube.faces.left[8])"></div>
-				<div ng-class="getClass(myCube.faces.front[6])"></div>
-				<div ng-class="getClass(myCube.faces.front[7])"></div>
-				<div ng-class="getClass(myCube.faces.front[8])"></div>
-				<div ng-class="getClass(myCube.faces.right[6])"></div>
-				<div ng-class="getClass(myCube.faces.right[7])"></div>
-				<div ng-class="getClass(myCube.faces.right[8])"></div>
-				<div ng-class="getClass(myCube.faces.back[6])"></div>
-				<div ng-class="getClass(myCube.faces.back[7])"></div>
-				<div ng-class="getClass(myCube.faces.back[8])"></div>
-			</div>
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.down[0])"></div>
-				<div ng-class="getClass(myCube.faces.down[1])"></div>
-				<div ng-class="getClass(myCube.faces.down[2])"></div>
-			</div>
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.down[3])"></div>
-				<div ng-class="getClass(myCube.faces.down[4])"></div>
-				<div ng-class="getClass(myCube.faces.down[5])"></div>
-			</div>
-			<div class="rowshort">
-				<div ng-class="getClass(myCube.faces.down[6])"></div>
-				<div ng-class="getClass(myCube.faces.down[7])"></div>
-				<div ng-class="getClass(myCube.faces.down[8])"></div>
-			</div>
-		</div>
-    <br>
-
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('t')" type="button">t</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('tp')" type="button">t'</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('l')" type="button">l</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('lp')" type="button">l'</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('f')" type="button">f</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('fp')" type="button">f'</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('r')" type="button">r</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('rp')" type="button">r'</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('b')" type="button">b</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('bp')" type="button">b'</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('d')" type="button">d</button>
-    <button class="bt" ng-disabled="btDisabled()" ng-click="rotate('dp')" type="button">d'</button>
-	<br>
-    <button class="btw" ng-disabled="btDisabled()" ng-click="shuffle()" type="button">shuffle</button>
-    <button class="btw" ng-disabled="btDisabled()" ng-click="reset()" type="button">reset</button>
-
-    <script src="./angular.js"></script>
-    <script src="./cube.js"></script>
-    <script src="./index.js"></script>
-    <link rel="stylesheet" href="./index.css">
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
+

@@ -1,0 +1,86 @@
+{
+  "hash": "e2980748",
+  "browserHash": "57758479",
+  "optimized": {
+    "svelte/animate": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/animate/index.mjs",
+      "file": "svelte_animate.js",
+      "fileHash": "461b4ce0",
+      "needsInterop": false
+    },
+    "svelte/easing": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/easing/index.mjs",
+      "file": "svelte_easing.js",
+      "fileHash": "8bf10732",
+      "needsInterop": false
+    },
+    "svelte/internal": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/internal/index.mjs",
+      "file": "svelte_internal.js",
+      "fileHash": "cd79b9c9",
+      "needsInterop": false
+    },
+    "svelte/motion": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/motion/index.mjs",
+      "file": "svelte_motion.js",
+      "fileHash": "987d204f",
+      "needsInterop": false
+    },
+    "svelte/store": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/store/index.mjs",
+      "file": "svelte_store.js",
+      "fileHash": "82c69c9b",
+      "needsInterop": false
+    },
+    "svelte/transition": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/transition/index.mjs",
+      "file": "svelte_transition.js",
+      "fileHash": "e067da8b",
+      "needsInterop": false
+    },
+    "svelte": {
+      "src": "../../node_modules/.deno/svelte@3.59.1/node_modules/svelte/index.mjs",
+      "file": "svelte.js",
+      "fileHash": "8efb38e5",
+      "needsInterop": false
+    },
+    "svelte-cubed": {
+      "src": "../../node_modules/.deno/svelte-cubed@0.2.1/node_modules/svelte-cubed/index.js",
+      "file": "svelte-cubed.js",
+      "fileHash": "c0fd59f5",
+      "needsInterop": false
+    },
+    "svelte-knobby": {
+      "src": "../../node_modules/.deno/svelte-knobby@0.3.4/node_modules/svelte-knobby/index.js",
+      "file": "svelte-knobby.js",
+      "fileHash": "aa6a43b1",
+      "needsInterop": false
+    },
+    "three": {
+      "src": "../../node_modules/.deno/three@0.153.0/node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "e5f38a6a",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-DOFP3NOG": {
+      "file": "chunk-DOFP3NOG.js"
+    },
+    "chunk-63HGFH26": {
+      "file": "chunk-63HGFH26.js"
+    },
+    "chunk-33U6ICCL": {
+      "file": "chunk-33U6ICCL.js"
+    },
+    "chunk-LQPJYDVF": {
+      "file": "chunk-LQPJYDVF.js"
+    },
+    "chunk-VWMEQJML": {
+      "file": "chunk-VWMEQJML.js"
+    },
+    "chunk-JC4IRQUL": {
+      "file": "chunk-JC4IRQUL.js"
+    }
+  }
+}
