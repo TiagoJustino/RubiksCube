@@ -6,6 +6,7 @@
       "@sveltejs/adapter-static@^2.0.2": "@sveltejs/adapter-static@2.0.2_@sveltejs+kit@1.22.0__svelte@3.59.2__vite@4.3.9_svelte@3.59.2_vite@4.3.9",
       "@sveltejs/vite-plugin-svelte@^2.4.2": "@sveltejs/vite-plugin-svelte@2.4.2_svelte@3.59.2_vite@4.3.9",
       "svelte-cubed@^0.2.1": "svelte-cubed@0.2.1",
+      "svelte-hamburgers@^4.1.0": "svelte-hamburgers@4.1.0_svelte@3.59.2",
       "svelte-knobby@^0.3.4": "svelte-knobby@0.3.4_svelte@3.59.2",
       "svelte@^3.59.2": "svelte@3.59.2",
       "three@^0.153.0": "three@0.153.0",
@@ -320,6 +321,12 @@
           "hast-util-heading-rank": "hast-util-heading-rank@2.1.1",
           "unist-util-visit": "unist-util-visit@4.1.2",
           "yootils": "yootils@0.3.1"
+        }
+      },
+      "svelte-hamburgers@4.1.0_svelte@3.59.2": {
+        "integrity": "sha512-uP3cHBhNRZDtg6PRcxaT5sOnF2o4uyHF37pqbq6ZN2zKekAHdvTn/wjiWv1arkYhnNZ+MzRgG7O/b+prN4zt5A==",
+        "dependencies": {
+          "svelte": "svelte@3.59.2"
         }
       },
       "svelte-hmr@0.15.2_svelte@3.59.2": {

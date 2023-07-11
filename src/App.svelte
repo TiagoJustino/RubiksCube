@@ -1,11 +1,13 @@
 <script lang="ts">
   import * as THREE from 'three';
   import { cubeletToBoxPosition } from './lib/cubelet-to-box-position';
+  import Menu from './lib/Menu.svelte';
   import { Cube } from './cube/cube';
   import { Face } from './cube/face';
   import { Rotation } from './cube/rotation';
   import type { Writable } from 'svelte/store';
   import * as knobby from 'svelte-knobby';
+  import { Hamburger } from 'svelte-hamburgers';
   import * as SC from 'svelte-cubed';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
@@ -57,6 +59,7 @@
   let shufflingCycles = 0;
   let controls: Writable<any>;
   let camera;
+  let open;
 
   function getRandom(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -232,7 +235,6 @@
     },
     'reset camera': resetCamera
   });
-
   $controls.workaround = true;
   $controls.DO_NOT_DELETE_ME = true;
 
@@ -278,3 +280,10 @@
   <SC.AmbientLight intensity={0.6} />
   <SC.DirectionalLight intensity={0.6} position={[-2, 3, 2]} shadow={{ mapSize: [2048, 2048] }} />
 </SC.Canvas>
+
+<div style="position: absolute; bottom: 0; right: 0; z-index: 999">
+  <Menu bind:open />
+  <div style='float:right'>
+      <Hamburger bind:open />
+   </div>
+</div>
