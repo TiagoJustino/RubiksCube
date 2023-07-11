@@ -7,6 +7,8 @@
   import type { Writable } from 'svelte/store';
   import * as knobby from 'svelte-knobby';
   import * as SC from 'svelte-cubed';
+  import { tweened } from 'svelte/motion';
+  import { cubicOut } from 'svelte/easing';
 
   const ANGLE_STEP_SIZE = Math.PI / 2 / 15;
   const CAMERA_INITIAL_POSITION = [3, 4, 5];
@@ -43,13 +45,18 @@
   let rotating: Face = null as unknown as Face;
   let rotation: Rotation = Rotation.clockwise;
   let angle = Math.PI / 2;
-  let cameraPosition = CAMERA_INITIAL_POSITION;
+  const cameraPosition = tweened([
+    CAMERA_INITIAL_POSITION[0],
+    CAMERA_INITIAL_POSITION[1],
+    CAMERA_INITIAL_POSITION[2]
+  ]);
   let shuffling = false;
   let solving = false;
   let solveMoves: string[] = [];
   let shufflingFirst = true;
   let shufflingCycles = 0;
   let controls: Writable<any>;
+  let camera;
 
   function getRandom(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -139,6 +146,31 @@
     }
   }
 
+  function getThreeJsCamera() {
+    for(const [_, value] of camera?.$$?.context?.entries()) {
+      if(value?.type == 'PerspectiveCamera') {
+        return value;
+      }
+    }
+    return null;
+  }
+
+  function resetCamera() {
+    const camera = getThreeJsCamera();
+    if(camera) {
+      const {x, y, z} = camera.position;
+      cameraPosition.set([x, y, z ], { duration: 0 });
+    }
+    cameraPosition.set([
+      CAMERA_INITIAL_POSITION[0],
+      CAMERA_INITIAL_POSITION[1],
+      CAMERA_INITIAL_POSITION[2]
+    ], {
+      duration: 600,
+      easing: cubicOut
+    });
+  }
+
   controls = knobby.panel({
     top: () => {
       rotating = Face.top;
@@ -198,21 +230,20 @@
     reset: () => {
       cube = new Cube();
     },
-    'reset camera': () => {
-      cameraPosition = CAMERA_INITIAL_POSITION;
-    }
+    'reset camera': resetCamera
   });
 
   $controls.workaround = true;
   $controls.DO_NOT_DELETE_ME = true;
 
   SC.onFrame(onFrameLoop);
+
 </script>
 
 <SC.Canvas
   antialias
   background={new THREE.Color('papayawhip')}
-  fog={new THREE.FogExp2('papayawhip', 0.1)}
+  fog={new THREE.FogExp2('papayawhip', 0.05)}
   shadows
 >
   <SC.Mesh
@@ -242,7 +273,7 @@
     </SC.Group>
   {/each}
 
-  <SC.PerspectiveCamera position={cameraPosition} />
+  <SC.PerspectiveCamera bind:this={camera} position={$cameraPosition} />
   <SC.OrbitControls />
   <SC.AmbientLight intensity={0.6} />
   <SC.DirectionalLight intensity={0.6} position={[-2, 3, 2]} shadow={{ mapSize: [2048, 2048] }} />
