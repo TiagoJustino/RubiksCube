@@ -46,7 +46,7 @@
   let cube: Cube = new Cube();
   let rotating: Face = null as unknown as Face;
   let rotation: Rotation = Rotation.clockwise;
-  let angle = Math.PI / 2;
+  let angle = 0;
   const cameraPosition = tweened([
     CAMERA_INITIAL_POSITION[0],
     CAMERA_INITIAL_POSITION[1],
@@ -174,65 +174,38 @@
     });
   }
 
+  function resetCube() {
+    cube = new Cube();
+  }
+
+  function shuffleCube() {
+    shuffling = true;
+    shufflingFirst = true;
+  }
+
+  function getRotationFunction(_rotating: Face, _rotation: Rotation): Function {
+    return () => {
+      rotating = _rotating;
+      rotation = _rotation;
+    }
+  }
+
   controls = knobby.panel({
-    top: () => {
-      rotating = Face.top;
-      rotation = Rotation.clockwise;
-    },
-    left: () => {
-      rotating = Face.left;
-      rotation = Rotation.clockwise;
-    },
-    front: () => {
-      rotating = Face.front;
-      rotation = Rotation.clockwise;
-    },
-    right: () => {
-      rotating = Face.right;
-      rotation = Rotation.clockwise;
-    },
-    back: () => {
-      rotating = Face.back;
-      rotation = Rotation.clockwise;
-    },
-    down: () => {
-      rotating = Face.down;
-      rotation = Rotation.clockwise;
-    },
-    'top prime': () => {
-      rotating = Face.top;
-      rotation = Rotation.counterclockwise;
-    },
-    'left prime': () => {
-      rotating = Face.left;
-      rotation = Rotation.counterclockwise;
-    },
-    'front prime': () => {
-      rotating = Face.front;
-      rotation = Rotation.counterclockwise;
-    },
-    'right prime': () => {
-      rotating = Face.right;
-      rotation = Rotation.counterclockwise;
-    },
-    'back prime': () => {
-      rotating = Face.back;
-      rotation = Rotation.counterclockwise;
-    },
-    'down prime': () => {
-      rotating = Face.down;
-      rotation = Rotation.counterclockwise;
-    },
-    shuffle: () => {
-      shuffling = true;
-      shufflingFirst = true;
-    },
-    solve: () => {
-      getNextSolveMoves();
-    },
-    reset: () => {
-      cube = new Cube();
-    },
+    top: getRotationFunction(Face.top, Rotation.clockwise),
+    left: getRotationFunction(Face.left, Rotation.clockwise),
+    front: getRotationFunction(Face.front, Rotation.clockwise),
+    right: getRotationFunction(Face.right, Rotation.clockwise),
+    back: getRotationFunction(Face.back, Rotation.clockwise),
+    down: getRotationFunction(Face.down, Rotation.clockwise),
+    'top prime': getRotationFunction(Face.top, Rotation.counterclockwise),
+    'left prime': getRotationFunction(Face.left, Rotation.counterclockwise),
+    'front prime': getRotationFunction(Face.front, Rotation.counterclockwise),
+    'right prime': getRotationFunction(Face.right, Rotation.counterclockwise),
+    'back prime': getRotationFunction(Face.back, Rotation.counterclockwise),
+    'down prime': getRotationFunction(Face.down, Rotation.counterclockwise),
+    shuffle: shuffleCube,
+    solve: getNextSolveMoves,
+    reset: resetCube,
     'reset camera': resetCamera
   });
   $controls.workaround = true;
