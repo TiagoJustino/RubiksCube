@@ -14,33 +14,43 @@
 
   const ANGLE_STEP_SIZE = Math.PI / 2 / 15;
   const CAMERA_INITIAL_POSITION = [3, 4, 5];
-  const moves: string[] = [
-    'top',
-    'left',
-    'front',
-    'right',
-    'back',
-    'down',
-    'top prime',
-    'left prime',
-    'front prime',
-    'right prime',
-    'back prime',
-    'down prime'
-  ];
-  const movesAliases: Record<string, string> = {
-    t: 'top',
-    l: 'left',
-    f: 'front',
-    r: 'right',
-    b: 'back',
-    d: 'down',
-    T: 'top prime',
-    L: 'left prime',
-    F: 'front prime',
-    R: 'right prime',
-    B: 'back prime',
-    D: 'down prime'
+
+  function getRotationFunction(_rotating: Face, _rotation: Rotation): Function {
+    return () => {
+      if(rotating) {
+        return;
+      }
+      rotating = _rotating;
+      rotation = _rotation;
+    }
+  }
+
+  const top = getRotationFunction(Face.top, Rotation.clockwise);
+  const left = getRotationFunction(Face.left, Rotation.clockwise);
+  const front = getRotationFunction(Face.front, Rotation.clockwise);
+  const right = getRotationFunction(Face.right, Rotation.clockwise);
+  const back = getRotationFunction(Face.back, Rotation.clockwise);
+  const down = getRotationFunction(Face.down, Rotation.clockwise);
+  const topPrime = getRotationFunction(Face.top, Rotation.counterclockwise);
+  const leftPrime = getRotationFunction(Face.left, Rotation.counterclockwise);
+  const frontPrime = getRotationFunction(Face.front, Rotation.counterclockwise);
+  const rightPrime = getRotationFunction(Face.right, Rotation.counterclockwise);
+  const backPrime = getRotationFunction(Face.back, Rotation.counterclockwise);
+  const downPrime = getRotationFunction(Face.down, Rotation.counterclockwise);
+
+  const movesMap: Record<string, Function> = {
+    t: top,
+    l: left,
+    f: front,
+    r: right,
+    b: back,
+    d: down,
+    T: topPrime,
+    L: leftPrime,
+    F: frontPrime,
+    R: rightPrime,
+    B: backPrime,
+    D: downPrime
   };
 
   let cube: Cube = new Cube();
@@ -83,6 +93,7 @@
       shufflingCycles = 20;
       shufflingFirst = false;
     }
+    const moves = Object.keys(movesMap);
     const len = moves.length;
     if (shufflingCycles <= 0) {
       shuffling = false;
@@ -92,7 +103,7 @@
     shufflingCycles--;
     const i = getRandom(0, len - 1);
     const move = moves[i];
-    const moveAsFunction = ($controls as unknown as Record<string, Function>)[move];
+    const moveAsFunction = movesMap[move];
     moveAsFunction();
   }
 
@@ -119,8 +130,7 @@
     }
     if(solving) {
       const moveAlias: string = solveMoves.splice(0, 1)[0];
-      const move: string = movesAliases[moveAlias];
-      const moveAsFunction = ($controls as unknown as Record<string, Function>)[move];
+      const moveAsFunction = movesMap[moveAlias];
       moveAsFunction();
     }
   }
@@ -175,29 +185,16 @@
     shufflingFirst = true;
   }
 
-  function getRotationFunction(_rotating: Face, _rotation: Rotation): Function {
-    return () => {
-      if(rotating) {
-        return;
-      }
-      rotating = _rotating;
-      rotation = _rotation;
-    }
-  }
-
   const knobbyConfig = {
-    top: getRotationFunction(Face.top, Rotation.clockwise),
-    left: getRotationFunction(Face.left, Rotation.clockwise),
-    front: getRotationFunction(Face.front, Rotation.clockwise),
-    right: getRotationFunction(Face.right, Rotation.clockwise),
-    back: getRotationFunction(Face.back, Rotation.clockwise),
-    down: getRotationFunction(Face.down, Rotation.clockwise),
-    'top prime': getRotationFunction(Face.top, Rotation.counterclockwise),
-    'left prime': getRotationFunction(Face.left, Rotation.counterclockwise),
-    'front prime': getRotationFunction(Face.front, Rotation.counterclockwise),
-    'right prime': getRotationFunction(Face.right, Rotation.counterclockwise),
-    'back prime': getRotationFunction(Face.back, Rotation.counterclockwise),
-    'down prime': getRotationFunction(Face.down, Rotation.counterclockwise),
+    clockwise: { top, left, front, right, back, down },
+    counterclockwise: {
+      'top prime': topPrime,
+      'left prime': leftPrime,
+      'front prime': frontPrime,
+      'right prime': rightPrime,
+      'back prime': backPrime,
+      'down prime': downPrime,
+    },
     shuffle: shuffleCube,
     solve: solve,
     reset: resetCube,
