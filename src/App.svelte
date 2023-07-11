@@ -65,20 +65,6 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  function getSolveButton(): HTMLButtonElement {
-    const detailsKnobby = document.querySelector('details.knobby') as Element;
-    const divRoot = detailsKnobby.querySelector('div.root') as Element;
-    return Array.from(divRoot.querySelectorAll('button')).find(el => el.textContent == 'solve') as HTMLButtonElement;
-  }
-  
-  function disableSolveButton() {
-    getSolveButton().disabled = true;
-  }
-
-  function enableSolveButton() {
-    getSolveButton().disabled = false;
-  }
-
   function rotatingLoop() {
     if (
       (rotation == Rotation.clockwise && angle >= Math.PI / 2) ||
@@ -115,21 +101,21 @@
     solving = true;
   }
 
-  function getNextSolveMoves() {
+  function solve() {
+    if(rotating || shuffling || solving) {
+      return;
+    }
     solveMoves = cube.clone().solve();
     if(solveMoves.length > 0) {
       setSolveMoves(solveMoves);
-      disableSolveButton();
     } else {
       solving = false;
-      enableSolveButton();
     }
   }
 
   function solvingLoop() {
     if (solveMoves.length < 1) {
       solving = false;
-      enableSolveButton();
     }
     if(solving) {
       const moveAlias: string = solveMoves.splice(0, 1)[0];
@@ -175,22 +161,31 @@
   }
 
   function resetCube() {
+    if(rotating || shuffling || solving) {
+      return;
+    }
     cube = new Cube();
   }
 
   function shuffleCube() {
+    if(rotating || shuffling || solving) {
+      return;
+    }
     shuffling = true;
     shufflingFirst = true;
   }
 
   function getRotationFunction(_rotating: Face, _rotation: Rotation): Function {
     return () => {
+      if(rotating) {
+        return;
+      }
       rotating = _rotating;
       rotation = _rotation;
     }
   }
 
-  controls = knobby.panel({
+  const knobbyConfig = {
     top: getRotationFunction(Face.top, Rotation.clockwise),
     left: getRotationFunction(Face.left, Rotation.clockwise),
     front: getRotationFunction(Face.front, Rotation.clockwise),
@@ -204,10 +199,12 @@
     'back prime': getRotationFunction(Face.back, Rotation.counterclockwise),
     'down prime': getRotationFunction(Face.down, Rotation.counterclockwise),
     shuffle: shuffleCube,
-    solve: getNextSolveMoves,
+    solve: solve,
     reset: resetCube,
     'reset camera': resetCamera
-  });
+  };
+
+  controls = knobby.panel(knobbyConfig);
   $controls.workaround = true;
   $controls.DO_NOT_DELETE_ME = true;
 

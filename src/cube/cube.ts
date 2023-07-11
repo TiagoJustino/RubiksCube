@@ -55,12 +55,8 @@ class Cube implements ICube {
    */
   solve(): string[] {
     let usedMoves: string[] = [];
-    let i = 0;
     for (const step of steps) {
-      const stepUsedMoves = dfs(this, step.moves, step.state, i);
-      usedMoves = usedMoves.concat(stepUsedMoves);
-      console.log(i, stepUsedMoves.join('').length);
-      i++;
+      usedMoves = usedMoves.concat(dfs(this, step.moves, step.state));
     }
     return usedMoves;
   }

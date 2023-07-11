@@ -16,7 +16,6 @@ function _dfs(
   depth: number,
   usedMoves: string[]
 ): { found: boolean; usedMoves?: string[] } {
-  // console.log('_dfs depth', depth, 'usedMoves', usedMoves);
   if (cube.satisfies(target)) {
     return { found: true, usedMoves };
   }
@@ -38,12 +37,9 @@ function _dfs(
   return { found: false };
 }
 
-function dfs(cube: ICube, moves: string[], target: CubeState, stepIndex: number): string[] {
+function dfs(cube: ICube, moves: string[], target: CubeState): string[] {
   const maxDepth = 50;
   for (let depth = 0; depth < maxDepth; depth++) {
-    if(depth > 4) {
-      console.log('depth', depth, 'stepIndex', stepIndex);
-    }
     const ret = _dfs(cube, moves, target, depth, []);
     if (ret.found) {
       return ret.usedMoves as string[];
