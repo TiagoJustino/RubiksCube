@@ -4,17 +4,17 @@
   import Menu from "./lib/Menu.svelte";
   import { Cube } from "./cube/cube";
   import { Rotation } from "./cube/rotation";
-  import * as knobby from "svelte-knobby";
   import { Hamburger } from "svelte-hamburgers";
   import * as SC from "svelte-cubed";
   import { tweened } from "svelte/motion";
   import { CAMERA_INITIAL_POSITION } from "./lib/contants";
-  import { getKnobbyConfig } from "./lib/get-knobby-config";
   import { solve } from "./lib/solve";
   import { resetCamera } from "./lib/reset-camera";
   import { shuffleCube } from "./lib/shuffle-cube";
   import { resetCube } from "./lib/reset-cube";
   import { getMovesMap } from "./lib/get-moves-map";
+  import { getKnobby } from "./lib/get-knobby";
+  import { getMenuConfig } from "./lib/get-menu-config";
 
   let camera: any;
   let open: any;
@@ -43,17 +43,18 @@
   const shuffleCubeFirst = () => shuffleCube(true, global, movesMap);
   const resetCubeG = () => resetCube(global, gAngle);
 
-  const knobbyConfig = getKnobbyConfig(
+  const menuConfig = getMenuConfig(
     movesMap,
     shuffleCubeFirst,
     solveFirst,
     resetCubeG,
     resetCam
   );
-
-  const controls = knobby.panel(knobbyConfig);
-  $controls.workaround = true;
-  $controls.DO_NOT_DELETE_ME = true;
+  /*
+  const knobby = getKnobby(menuConfig);
+  $knobby.workaround = true;
+  $knobby.DO_NOT_DELETE_ME = true;
+  */
 </script>
 
 <SC.Canvas
@@ -106,7 +107,7 @@
 </SC.Canvas>
 
 <div style="position: absolute; bottom: 0; right: 0; z-index: 999">
-  <Menu bind:open />
+  <Menu bind:open config={menuConfig} />
   <div style="float:right">
     <Hamburger bind:open />
   </div>

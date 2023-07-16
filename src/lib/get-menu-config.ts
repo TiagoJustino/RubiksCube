@@ -1,4 +1,4 @@
-const getKnobbyConfig = (
+const getMenuConfig = (
   m: any,
   shuffleCubeFirst: Function,
   solveFirst: Function,
@@ -29,4 +29,4 @@ const getKnobbyConfig = (
   };
 };
 
-export { getKnobbyConfig };
+export { getMenuConfig };
